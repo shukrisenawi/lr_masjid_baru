@@ -30,18 +30,31 @@ export default function ResetPassword({
 
     return (
         <GuestLayout>
-            <Head title="Reset Password" />
+            <Head title="Tetapkan semula kata laluan" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+            <div className="mb-7">
+                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--gold-text)]">
+                    Keselamatan akaun
+                </p>
+                <h1 className="display-title mt-2 text-3xl font-semibold text-[var(--heading)]">
+                    Kata laluan baharu
+                </h1>
+                <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+                    Pilih kata laluan yang panjang dan tidak digunakan di tempat
+                    lain.
+                </p>
+            </div>
+
+            <form onSubmit={submit} className="space-y-5">
+                <div className="space-y-2">
+                    <InputLabel htmlFor="email" value="Alamat e-mel" />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                     />
@@ -49,15 +62,15 @@ export default function ResetPassword({
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <div className="space-y-2">
+                    <InputLabel htmlFor="password" value="Kata laluan baharu" />
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="new-password"
                         isFocused={true}
                         onChange={(e) => setData('password', e.target.value)}
@@ -66,17 +79,18 @@ export default function ResetPassword({
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="space-y-2">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="Sahkan kata laluan baharu"
                     />
 
                     <TextInput
+                        id="password_confirmation"
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -89,9 +103,9 @@ export default function ResetPassword({
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
+                <div className="flex justify-end pt-1">
+                    <PrimaryButton className="w-full sm:w-auto" disabled={processing}>
+                        {processing ? 'Sedang disimpan...' : 'Simpan kata laluan'}
                     </PrimaryButton>
                 </div>
             </form>

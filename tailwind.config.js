@@ -13,7 +13,12 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
+                display: ['Lora', ...defaultTheme.fontFamily.serif],
+            },
+            boxShadow: {
+                soft: '0 18px 50px -24px rgba(17, 54, 45, 0.35)',
+                lift: '0 24px 60px -28px rgba(17, 54, 45, 0.45)',
             },
         },
     },

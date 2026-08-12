@@ -3,6 +3,7 @@
 use App\Http\Controllers\DeviceInstallationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,6 +18,16 @@ Route::get('/dashboard', function () {
             'status' => $account->status ?? 'Belum didaftarkan',
             'balanceDue' => $account->balance_due ?? '0.00',
         ],
+        'schedules' => DB::table('study_schedules')
+            ->where('starts_at', '>=', now())
+            ->orderBy('starts_at')
+            ->limit(2)
+            ->get(),
+        'announcements' => DB::table('announcements')
+            ->whereNotNull('published_at')
+            ->latest('published_at')
+            ->limit(2)
+            ->get(),
     ]);
 })->middleware('auth')->name('dashboard');
 

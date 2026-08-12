@@ -14,35 +14,40 @@ export default function VerifyEmail({ status }: { status?: string }) {
 
     return (
         <GuestLayout>
-            <Head title="Email Verification" />
+            <Head title="Pengesahan e-mel" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
+            <div className="mb-7">
+                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--gold-text)]">
+                    Satu langkah lagi
+                </p>
+                <h1 className="display-title mt-2 text-3xl font-semibold text-[var(--heading)]">
+                    Sahkan alamat e-mel
+                </h1>
+                <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+                    Klik pautan yang dihantar ke e-mel anda. Kami boleh menghantar
+                    semula jika pautan belum diterima.
+                </p>
             </div>
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                <div className="mb-5 rounded-xl bg-[var(--sage)] px-4 py-3 text-sm font-bold text-[var(--heading)]">
+                    Pautan pengesahan baharu telah dihantar ke e-mel anda.
                 </div>
             )}
 
             <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <PrimaryButton disabled={processing}>
-                        Resend Verification Email
+                        {processing ? 'Sedang dihantar...' : 'Hantar semula'}
                     </PrimaryButton>
 
                     <Link
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="text-center text-sm font-extrabold text-[var(--ink-soft)] underline decoration-[var(--gold)] underline-offset-4"
                     >
-                        Log Out
+                        Log keluar
                     </Link>
                 </div>
             </form>

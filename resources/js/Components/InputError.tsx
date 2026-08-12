@@ -8,7 +8,7 @@ export default function InputError({
     return message ? (
         <p
             {...props}
-            className={'text-sm text-red-600 ' + className}
+            className={'text-sm font-semibold text-[#a53a32] ' + className}
         >
             {message}
         </p>

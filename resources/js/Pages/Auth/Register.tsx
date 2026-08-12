@@ -27,15 +27,27 @@ export default function Register() {
         <GuestLayout>
             <Head title="Daftar kariah" />
 
-            <form onSubmit={submit}>
-                <div>
+            <div className="mb-7">
+                <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--gold-text)]">
+                    Keahlian keluarga
+                </p>
+                <h1 className="display-title mt-2 text-3xl font-semibold text-[var(--heading)]">
+                    Daftar sebagai anak kariah
+                </h1>
+                <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
+                    Permohonan akan disemak oleh pihak masjid sebelum diaktifkan.
+                </p>
+            </div>
+
+            <form onSubmit={submit} className="space-y-5">
+                <div className="space-y-2">
                     <InputLabel htmlFor="name" value="Nama penuh" />
 
                     <TextInput
                         id="name"
                         name="name"
                         value={data.name}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="name"
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
@@ -45,7 +57,7 @@ export default function Register() {
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="space-y-2">
                     <InputLabel htmlFor="phone" value="Nombor telefon" />
 
                     <TextInput
@@ -53,7 +65,7 @@ export default function Register() {
                         type="tel"
                         name="phone"
                         value={data.phone}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="tel"
                         placeholder="+60123456789"
                         onChange={(e) => setData('phone', e.target.value)}
@@ -63,7 +75,7 @@ export default function Register() {
                     <InputError message={errors.phone} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="space-y-2">
                     <InputLabel htmlFor="address" value="Alamat rumah dalam kariah" />
 
                     <textarea
@@ -71,7 +83,7 @@ export default function Register() {
                         name="address"
                         value={data.address}
                         onChange={(e) => setData('address', e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700"
+                        className="form-field block w-full resize-none"
                         rows={3}
                         required
                     />
@@ -79,7 +91,7 @@ export default function Register() {
                     <InputError message={errors.address} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="space-y-2">
                     <InputLabel htmlFor="password" value="Kata laluan" />
 
                     <TextInput
@@ -87,7 +99,7 @@ export default function Register() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         required
@@ -96,7 +108,7 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="space-y-2">
                     <InputLabel
                         htmlFor="password_confirmation"
                         value="Sahkan kata laluan"
@@ -107,7 +119,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="block w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -121,16 +133,16 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="flex flex-col-reverse gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
                     <Link
                         href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="text-center text-sm font-extrabold text-[var(--primary)] underline decoration-[var(--gold)] underline-offset-4"
                     >
                         Sudah ada akaun?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Hantar pendaftaran
+                    <PrimaryButton className="w-full sm:w-auto" disabled={processing}>
+                        {processing ? 'Sedang dihantar...' : 'Hantar pendaftaran'}
                     </PrimaryButton>
                 </div>
             </form>

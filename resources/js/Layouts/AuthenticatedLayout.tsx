@@ -1,179 +1,183 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import { PageProps } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import {
+    ArrowLeftOnRectangleIcon,
+    CalendarDaysIcon,
+    HomeIcon,
+    UserGroupIcon,
+    UserIcon,
+} from '@heroicons/react/24/outline';
+import { PropsWithChildren, ReactNode } from 'react';
+
+type NavigationItem = {
+    label: string;
+    href: string;
+    icon: typeof HomeIcon;
+    active: boolean;
+};
+
+function Brand() {
+    return (
+        <span className="flex items-center gap-3">
+            <span className="grid size-11 place-items-center rounded-xl bg-[var(--primary)] text-[var(--primary-text)] shadow-soft">
+                <ApplicationLogo className="size-7" />
+            </span>
+            <span className="leading-tight">
+                <span className="display-title block text-lg font-semibold text-[var(--heading)]">
+                    Masjid Kariah
+                </span>
+                <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--ink-soft)]">
+                    Portal ahli
+                </span>
+            </span>
+        </span>
+    );
+}
 
 export default function Authenticated({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const user = usePage().props.auth.user;
-
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const user = usePage<PageProps>().props.auth.user;
+    const currentRoute = route().current();
+    const navigation: NavigationItem[] = [
+        {
+            label: 'Utama',
+            href: route('dashboard'),
+            icon: HomeIcon,
+            active: currentRoute === 'dashboard',
+        },
+        {
+            label: 'Jadual',
+            href: '/#pengajian',
+            icon: CalendarDaysIcon,
+            active: false,
+        },
+        {
+            label: 'Komuniti',
+            href: '/#komuniti',
+            icon: UserGroupIcon,
+            active: false,
+        },
+        {
+            label: 'Akaun',
+            href: route('profile.edit'),
+            icon: UserIcon,
+            active: currentRoute === 'profile.edit',
+        },
+    ];
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                </Link>
-                            </div>
+        <div className="min-h-[100dvh] bg-[var(--surface-strong)] text-[var(--ink)] lg:grid lg:grid-cols-[17.5rem_1fr]">
+            <aside className="pattern-geometry hidden min-h-[100dvh] border-r border-[var(--line)] bg-[var(--surface)] p-5 lg:flex lg:flex-col">
+                <Link href="/" className="px-2 py-2">
+                    <Brand />
+                </Link>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
-
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </Dropdown.Trigger>
-
-                                    <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route('profile.edit')}
-                                        >
-                                            Profile
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                <nav className="mt-10 space-y-1.5" aria-label="Navigasi ahli">
+                    {navigation.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                            <Link
+                                key={item.label}
+                                href={item.href}
+                                className={`flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm font-bold transition ${
+                                    item.active
+                                        ? 'bg-[var(--primary)] text-[var(--primary-text)] shadow-soft'
+                                        : 'text-[var(--ink-soft)] hover:bg-[var(--sage)] hover:text-[var(--heading)]'
+                                }`}
                             >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                                <Icon className="size-5" />
+                                {item.label}
+                            </Link>
+                        );
+                    })}
+                </nav>
 
-                <div
-                    className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
-                    }
-                >
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <div className="border-t border-gray-200 pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
+                <div className="mt-auto rounded-2xl border border-[var(--line)] bg-[var(--surface-strong)] p-4">
+                    <div className="flex items-center gap-3">
+                        <span className="grid size-10 place-items-center rounded-xl bg-[var(--gold-soft)] font-extrabold text-[var(--heading)]">
+                            {user.name.charAt(0).toUpperCase()}
+                        </span>
+                        <div className="min-w-0">
+                            <p className="truncate text-sm font-extrabold text-[var(--heading)]">
                                 {user.name}
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                {user.email}
-                            </div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route('logout')}
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
+                            </p>
+                            <p className="truncate text-xs text-[var(--ink-soft)]">
+                                {user.phone}
+                            </p>
                         </div>
                     </div>
+                    <Link
+                        href={route('logout')}
+                        method="post"
+                        as="button"
+                        className="mt-4 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-[var(--ink-soft)] transition hover:bg-[var(--surface)] hover:text-[var(--danger)]"
+                    >
+                        <ArrowLeftOnRectangleIcon className="size-5" />
+                        Log keluar
+                    </Link>
                 </div>
-            </nav>
+            </aside>
 
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        {header}
+            <div className="min-w-0">
+                <header className="sticky top-0 z-20 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--surface-strong)_88%,transparent)] px-4 backdrop-blur-xl lg:hidden">
+                    <div className="mx-auto flex h-[68px] max-w-3xl items-center justify-between">
+                        <Link href="/" aria-label="Portal Masjid Kariah">
+                            <Brand />
+                        </Link>
+                        <Link
+                            href={route('profile.edit')}
+                            aria-label="Buka profil"
+                            className="grid size-11 place-items-center rounded-xl border border-[var(--line)] bg-[var(--surface)] text-[var(--heading)]"
+                        >
+                            <UserIcon className="size-5" />
+                        </Link>
                     </div>
                 </header>
-            )}
 
-            <main>{children}</main>
+                {header && (
+                    <header className="border-b border-[var(--line)] bg-[var(--surface)]">
+                        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+                            {header}
+                        </div>
+                    </header>
+                )}
+
+                <main className="pb-28 lg:pb-0">{children}</main>
+
+                <nav
+                    className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--line)] bg-[color-mix(in_srgb,var(--surface)_92%,transparent)] px-2 pb-[max(.65rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden"
+                    aria-label="Navigasi bawah"
+                >
+                    <div className="mx-auto grid max-w-xl grid-cols-4">
+                        {navigation.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <Link
+                                    key={item.label}
+                                    href={item.href}
+                                    className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold transition ${
+                                        item.active
+                                            ? 'text-[var(--primary)]'
+                                            : 'text-[var(--ink-soft)]'
+                                    }`}
+                                >
+                                    <span
+                                        className={`grid h-7 min-w-10 place-items-center rounded-full px-2 ${
+                                            item.active ? 'bg-[var(--gold-soft)]' : ''
+                                        }`}
+                                    >
+                                        <Icon className="size-5" />
+                                    </span>
+                                    {item.label}
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </nav>
+            </div>
         </div>
     );
 }
